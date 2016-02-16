@@ -14,12 +14,12 @@ void printBoard(int num_rows, int num_columns, int board[num_rows][num_columns])
    int row, col;
 
    //system("clear");
-   puts("\n    ******Connect Four******\n");
+   puts("\n    ****** Connect Four ******\n");
    puts("    0   1    2    3    4    5    6\n");
    puts("------------------------------------");
    for(row = num_rows - 1; row >= 0; row--){
       for(col = 0; col < num_columns; col++){
-      	if(board[row][col] == 0) {
+      	if(board[row][col] == 0 || board[row][col] == 1) {
       		printf("|  %d ", board[row][col]);
       	}
       	else {
@@ -51,5 +51,7 @@ int main () {
 
   answer = place_token(1, 1, num_rows, num_columns, array);
   printf("%d", answer);
+
+  printBoard(num_rows, num_columns, array);
 
 }

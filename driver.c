@@ -171,13 +171,13 @@ void testPutToken() {
   int answer;
   ct_initialize(num_rows, num_columns, array);
 
-  array[0][0] = 0;
-  array[0][1] = 0;
-  array[0][2] = 0;
-  array[0][3] = 0;
+  // array[0][0] = 0;
+  // array[0][1] = 0;
+  // array[0][2] = 0;
+  // array[0][3] = 0;
 
   printBoard(num_rows, num_columns, array);
-  answer = place_token(1, 6, num_rows, num_columns, array);
+  answer = place_token(1, 3, num_rows, num_columns, array);
   printf("%d", answer);
   printBoard(num_rows, num_columns, array);
 }

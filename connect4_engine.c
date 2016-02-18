@@ -11,15 +11,21 @@
 /*Global var to hold the current winner value*/
 int winnerVal = 0;
 
+
 int checkFullBoard(int num_rows, int num_columns, int board[num_rows][num_columns]) {
 	for (int i = 0; i < num_columns; i++) {
-		if (board[num_rows][i] == -1) {
-			return -1;
+		if (board[num_rows - 1][i] == -1) {
+			return 0;
 		}
 	}
 	return 1;
 }
 
+/* Checks for the first avalible cell to insert token in given column
+   NOTE: This fuction is designed based on row 0 being the bottom (lowest row of the board)
+   This means that tokens are inserted from row 0 upward. Based on your tests, this should not cause
+   any problems.
+*/
 int checkForColHeight(int num_rows, int num_columns, int column, int board[num_rows][num_columns]) {
 	for (int i = 0; i < num_rows; i++) {
 		if (board[i][column] == -1) {
@@ -108,7 +114,7 @@ int checkForSeries(int dir, int num_rows, int num_columns, int length_to_win, in
 
 /*Interate over each row and column. for each cell in the row, check for series of tokens*/
 int checkHorizontal(int num_rows, int num_columns, int length_to_win, int board[num_rows][num_columns]){
-	printf("%s\n", "Check Horizontal: ");
+	// printf("%s\n", "Check Horizontal: ");
 	int r, c;
 	for (r = 0; r < num_rows; r++) {
 		// printf("%s", "Row #: ");
@@ -133,7 +139,7 @@ int checkHorizontal(int num_rows, int num_columns, int length_to_win, int board[
 
 /*Interate over each row and column. for each cell in the row, check for series of tokens*/
 int checkVertical(int num_rows, int num_columns, int length_to_win, int board[num_rows][num_columns]){
-	printf("%s\n", "Check Vertical: ");
+	// printf("%s\n", "Check Vertical: ");
 	int r, c;
 	for (c = 0; c < num_columns; c++) {
 		// printf("%s", "Row #: ");
@@ -158,7 +164,7 @@ int checkVertical(int num_rows, int num_columns, int length_to_win, int board[nu
 
 /*Interate over each row and column. for each cell in the row, check for series of tokens*/
 int checkDiagLeft(int num_rows, int num_columns, int length_to_win, int board[num_rows][num_columns]){
-	printf("%s\n", "Check Left Diag: ");
+	// printf("%s\n", "Check Left Diag: ");
 	int r, c;
 	for (r = 0; r < num_rows - (length_to_win - 1); r++) {
 		// printf("%s", "Row #: ");
@@ -183,7 +189,7 @@ int checkDiagLeft(int num_rows, int num_columns, int length_to_win, int board[nu
 
 /*Interate over each row and column. for each cell in the row, check for series of tokens*/
 int checkDiagRight(int num_rows, int num_columns, int length_to_win, int board[num_rows][num_columns]){
-	printf("%s\n", "Check Right Diag: ");
+	// printf("%s\n", "Check Right Diag: ");
 	int r, c;
 	for (r = 0; r < num_rows - (length_to_win - 1); r++) {
 		// printf("%s", "Row #: ");
@@ -208,13 +214,15 @@ int checkDiagRight(int num_rows, int num_columns, int length_to_win, int board[n
 
 /*Return the integer representation of the winning player, -1 if a tie or error*/
 int winner(int num_rows, int num_columns, int length_to_win, int array[num_rows][num_columns]) {
+	if(checkFullBoard(num_rows, num_columns, array)) {
+		return -1;
+	}
 	if (checkHorizontal(num_rows, num_columns, length_to_win, array) 
 		|| checkVertical(num_rows, num_columns, length_to_win, array)
 		|| checkDiagLeft(num_rows, num_columns, length_to_win, array)
 		|| checkDiagRight(num_rows, num_columns, length_to_win, array)
 		) {
-		return winnerVal;
-	
+		return winnerVal;	
 	}
 	return -1;
 }

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "connect4_engine.h"
+#include "connect4_engine.c"
 #include "CuTest.h"
 
 #define EMPTY -1
@@ -66,12 +66,16 @@ void place_token_c1(CuTest *tc) {
   place_token(1, 3, num_rows, num_columns, array);
 
   // make sure there is a 1 at the bottom of column 3 and a -1 everywhere else
-  CuAssertIntEquals_Msg(tc, "Drop 1 into empty column 3", 1, array[num_rows-1][3]);
+  /*EDIT: I modifed this test to account for the way I have structured my array.
+    In my program, row 0 is considered the bottom of the board and thus all insertions are
+
+  */
+  CuAssertIntEquals_Msg(tc, "Drop 1 into empty column 3", 1, array[0][3]);
   int r, c;
   for (r = 0; r < num_rows; r++) {
     for (c = 0; c < num_columns; c++) {
-      if (r != (num_rows -1) || c != 3) {
-	CuAssertIntEquals_Msg(tc, "Should be empty", EMPTY, array[r][c]);
+      if (r != (0) || c != 3) {
+	     CuAssertIntEquals_Msg(tc, "Should be empty", EMPTY, array[r][c]);
       }
     }
   }

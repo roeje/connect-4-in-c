@@ -33,7 +33,11 @@ int checkForColHeight(int num_rows, int num_columns, int column, int board[num_r
 	return -1;
 }
 
-/*Return state of inserted token. Validly placed or invalid*/
+/*Return state of inserted token. Validly placed or invalid
+ *	
+ * I am assuming, that the state of the board is valid (that the board has been filled bottom up).
+ * No empty cells exitst with tokens inserted above them manually.
+ */
 int place_token(int player, int column, int num_rows, int num_columns, int board[num_rows][num_columns]) {
 	
 	/*Check for invalid Parameters*/

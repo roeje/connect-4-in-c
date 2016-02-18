@@ -480,6 +480,109 @@ void place_token_c1(CuTest *tc) {
   }
 }
 
+void place_tokenInvalid(CuTest *tc) {
+
+  int num_rows = 7;
+  int num_columns = 7;
+  int array[num_rows][num_columns];
+  ct_initialize(num_rows, num_columns, array);
+
+  int x = place_token(1, 7, num_rows, num_columns, array);
+
+  CuAssertIntEquals_Msg(tc, "Drop 1 into invalid column", -1, x);
+  int r, c;
+  for (r = 0; r < num_rows; r++) {
+    for (c = 0; c < num_columns; c++) {      
+       CuAssertIntEquals_Msg(tc, "Should be empty", EMPTY, array[r][c]);      
+    }
+  }
+}
+
+void place_tokenInvalidFull(CuTest *tc) {
+
+  int num_rows = 7;
+  int num_columns = 7;
+  int array[num_rows][num_columns];
+  ct_initialize(num_rows, num_columns, array);
+
+  array[0][0] = 0;  
+  array[1][0] = 0;
+  array[2][0] = 0;
+  array[3][0] = 0;
+  array[4][0] = 0;
+  array[5][0] = 0; 
+  array[6][0] = 0; 
+
+  int x = place_token(1, 0, num_rows, num_columns, array);
+
+  CuAssertIntEquals_Msg(tc, "Drop 1 into invalid full column", -1, x);
+  int r, c;
+  for (r = 0; r < num_rows; r++) {
+    for (c = 0; c < num_columns; c++) {
+      if (c != 0) {      
+        CuAssertIntEquals_Msg(tc, "Should be empty", EMPTY, array[r][c]);      
+      }
+    }
+  }
+}
+
+void place_tokenLeftTopCorner(CuTest *tc) {
+
+  int num_rows = 7;
+  int num_columns = 7;
+  int array[num_rows][num_columns];
+  ct_initialize(num_rows, num_columns, array);
+
+  array[0][0] = 0;  
+  array[1][0] = 0;
+  array[2][0] = 0;
+  array[3][0] = 0;
+  array[4][0] = 0;
+  array[5][0] = 0;   
+
+  int x = place_token(1, 0, num_rows, num_columns, array);
+
+  CuAssertIntEquals_Msg(tc, "Drop 1 into top left col.", 1, x);
+  int r, c;
+  for (r = 0; r < num_rows; r++) {
+    for (c = 0; c < num_columns; c++) {
+      if (c != 0) {      
+        CuAssertIntEquals_Msg(tc, "Should be empty", EMPTY, array[r][c]);      
+      }
+    }
+  }
+}
+
+
+/*Test Full board*/
+void check_FullBoard(CuTest *tc) {
+
+  int num_rows = 3;
+  int num_columns = 3;
+  int array[num_rows][num_columns];
+  ct_initialize(num_rows, num_columns, array);
+
+  array[0][0] = 0;  
+  array[1][0] = 0;
+  array[2][0] = 0;
+  array[0][1] = 0;  
+  array[1][1] = 0;
+  array[2][1] = 0;
+  array[0][2] = 0;  
+  array[1][2] = 0;
+  array[2][2] = 0;    
+
+  int x = checkFullBoard(num_rows, num_columns, array);
+
+  CuAssertIntEquals_Msg(tc, "Check Full board", 1, x);
+  int r, c;
+  for (r = 0; r < num_rows; r++) {
+    for (c = 0; c < num_columns; c++) {           
+      CuAssertIntEquals_Msg(tc, "Should be Full", 0, array[r][c]);            
+    }
+  }
+}
+
 
 /*******************************************************************************************
  *
@@ -725,6 +828,11 @@ CuSuite* c4_engine_suite() {
    SUITE_ADD_TEST(suite, winner_diagRightFull);
 
    SUITE_ADD_TEST(suite, place_token_c1);
+   SUITE_ADD_TEST(suite, place_tokenInvalid);
+   SUITE_ADD_TEST(suite, place_tokenInvalidFull);
+   SUITE_ADD_TEST(suite, place_tokenLeftTopCorner);
+
+   SUITE_ADD_TEST(suite, check_FullBoard);
 
    SUITE_ADD_TEST(suite, horizontal_row0);
    SUITE_ADD_TEST(suite, vertical_column1);

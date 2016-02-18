@@ -2,11 +2,7 @@
  * Connect4 Game: Implementation of the classic Connect4 game in C
  *
  */
-// #include <stdlib.h>
-// #include <string.h>
-// #include "connect4_engine.h"
-
-/*Initialize the board state boardstate default is -1*/
+#include "connect4_engine.h"
 
 /*Global var to hold the current winner value*/
 int winnerVal = 0;
@@ -35,21 +31,19 @@ int checkForColHeight(int num_rows, int num_columns, int column, int board[num_r
 	return -1;
 }
 
-/*
-
-
-Add Error Checking!!!!!!!!!!!
-
-
-*/
-
 /*Return weather the token is validly placed*/
 int place_token(int player, int column, int num_rows, int num_columns, int board[num_rows][num_columns]) {
+	
+	/*Check for invalid Parameters*/
+	if(column > (num_columns - 1) || column < 0 || player > 1 || player < 0 
+		|| num_columns <= 0 || num_rows <= 0) {
+		return -1;
+	}	
+
 	int firstOpenRow = checkForColHeight(num_rows, num_columns, column, board);
 	if (firstOpenRow == -1) { 
 		return -1;
-	}
-	else {
+	}else {
 		board[firstOpenRow][column] = player;
 		return 1;
 	}
@@ -72,7 +66,7 @@ int checkForSeries(int dir, int num_rows, int num_columns, int length_to_win, in
 				}
 			}
 			return board[r][c];
-			break;
+			break;			
 		/*Vertical*/
 		case 1: 
 			for (int i = 1; i < length_to_win; i++) {
@@ -84,7 +78,6 @@ int checkForSeries(int dir, int num_rows, int num_columns, int length_to_win, in
 			}
 			return board[r][c];			
 			break;
-
 		/*Left Diag*/
 		case 2:
 			for (int i = 1; i < length_to_win; i++) {
@@ -106,8 +99,7 @@ int checkForSeries(int dir, int num_rows, int num_columns, int length_to_win, in
 				}
 			}
 			return board[r][c];	
-			break;
-		
+			break;		
 		return -1;
 	}
 }
@@ -120,7 +112,6 @@ int checkHorizontal(int num_rows, int num_columns, int length_to_win, int board[
 		// printf("%s", "Row #: ");
 		// printf("%d\n", r);
 		for(c = 0; c < num_columns - (length_to_win - 1); c++) {
-
 			// printf("%s", "Col #: ");
 			// printf("%d\n", c);
 			int winner = checkForSeries(0, num_rows, num_columns, length_to_win, r, c, board);
@@ -145,7 +136,6 @@ int checkVertical(int num_rows, int num_columns, int length_to_win, int board[nu
 		// printf("%s", "Row #: ");
 		// printf("%d\n", r);
 		for(r = 0; r < num_rows - (length_to_win - 1); r++) {
-
 			// printf("%s", "Col #: ");
 			// printf("%d\n", c);
 			int winner = checkForSeries(1, num_rows, num_columns, length_to_win, r, c, board);
@@ -170,7 +160,6 @@ int checkDiagLeft(int num_rows, int num_columns, int length_to_win, int board[nu
 		// printf("%s", "Row #: ");
 		// printf("%d\n", r);
 		for(c = num_columns - 1; c > (length_to_win - 2); c--) {
-
 			// printf("%s", "Col #: ");
 			// printf("%d\n", c);
 			int winner = checkForSeries(2, num_rows, num_columns, length_to_win, r, c, board);
@@ -195,7 +184,6 @@ int checkDiagRight(int num_rows, int num_columns, int length_to_win, int board[n
 		// printf("%s", "Row #: ");
 		// printf("%d\n", r);
 		for(c = 0; c < num_columns - (length_to_win - 1); c++) {
-
 			// printf("%s", "Col #: ");
 			// printf("%d\n", c);
 			int winner = checkForSeries(3, num_rows, num_columns, length_to_win, r, c, board);
@@ -214,15 +202,20 @@ int checkDiagRight(int num_rows, int num_columns, int length_to_win, int board[n
 
 /*Return the integer representation of the winning player, -1 if a tie or error*/
 int winner(int num_rows, int num_columns, int length_to_win, int array[num_rows][num_columns]) {
-	if(checkFullBoard(num_rows, num_columns, array)) {
+	
+	/*Check for invalid Parameters*/
+	if (length_to_win <= 0 || length_to_win > num_columns || num_columns <= 0 || num_rows <= 0)	{
 		return -1;
-	}
+	}	
 	if (checkHorizontal(num_rows, num_columns, length_to_win, array) 
 		|| checkVertical(num_rows, num_columns, length_to_win, array)
 		|| checkDiagLeft(num_rows, num_columns, length_to_win, array)
 		|| checkDiagRight(num_rows, num_columns, length_to_win, array)
 		) {
 		return winnerVal;	
+	}
+	if(checkFullBoard(num_rows, num_columns, array)) {
+		return -1;
 	}
 	return -1;
 }

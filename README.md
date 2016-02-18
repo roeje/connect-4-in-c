@@ -1,2 +1,3 @@
-Connect 4 based on project created by Dr. Nandigam, modified by Dr. Kurmas, modified by Mr. Woodring.
-
+CIS 343 Connect 4 in C. 
+Implemented by Jesse Roe.
+2/17/2016

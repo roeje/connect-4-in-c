@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "connect4_engine.c"
+#include "connect4_engine.h"
 #include "CuTest.h"
 
 #define EMPTY -1
@@ -42,6 +42,405 @@ void winner_horizontal_r0(CuTest *tc) {
   answer = winner(num_rows, num_columns, 4, array);
   CuAssertIntEquals_Msg(tc, "0s in bottom row", 0, answer);
 }
+
+/*
+* Custom Winner Tests
+*
+*
+*
+*
+*/
+/*Testing Horizontal*/
+void winner_horizontalTop(CuTest *tc) {
+
+  int num_rows = 6;
+  int num_columns = 6;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[num_rows - 1][0] = 0;
+  array[num_rows - 1][1] = 0;
+  array[num_rows - 1][2] = 0;
+  array[num_rows - 1][3] = 0;
+  array[num_rows - 1][4] = 0;
+
+  answer = winner(num_rows, num_columns, 5, array);
+  CuAssertIntEquals_Msg(tc, "0s in top row", 0, answer);
+}
+
+void winner_horizontalTopFull(CuTest *tc) {
+
+  int num_rows = 5;
+  int num_columns = 5;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[num_rows - 1][0] = 1;
+  array[num_rows - 1][1] = 1;
+  array[num_rows - 1][2] = 1;
+  array[num_rows - 1][3] = 1;
+  array[num_rows - 1][4] = 1;
+
+  answer = winner(num_rows, num_columns, 5, array);
+  CuAssertIntEquals_Msg(tc, "1s in top row", 1, answer);
+}
+
+void winner_horizontalTopFail(CuTest *tc) {
+
+  int num_rows = 5;
+  int num_columns = 5;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[num_rows - 1][0] = 1;
+  array[num_rows - 1][1] = 1;
+  array[num_rows - 1][2] = 1;
+  array[num_rows - 1][3] = 1;  
+
+  answer = winner(num_rows, num_columns, 5, array);
+  CuAssertIntEquals_Msg(tc, "1s in top row fail", -1, answer);
+}
+
+void winner_horizontalBottomTestOverload(CuTest *tc) {
+
+  int num_rows = 5;
+  int num_columns = 5;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[num_rows - 1][0] = 1;
+  array[num_rows - 1][1] = 1;
+  array[num_rows - 1][2] = 1;
+  array[num_rows - 1][3] = 1;  
+
+  answer = winner(num_rows, num_columns, 2, array);
+  CuAssertIntEquals_Msg(tc, "1s bottom overload", 1, answer);
+}
+
+void winner_horizontalSingleToken(CuTest *tc) {
+
+  int num_rows = 5;
+  int num_columns = 5;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[2][3] = 1;  
+
+  answer = winner(num_rows, num_columns, 1, array);
+  CuAssertIntEquals_Msg(tc, "1 in center", 1, answer);
+}
+
+void winner_horizontalDoubleTokenBottomRight(CuTest *tc) {
+
+  int num_rows = 20;
+  int num_columns = 20;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[0][num_columns - 1] = 0;
+  array[0][num_columns - 2] = 0;  
+
+  answer = winner(num_rows, num_columns, 2, array);
+  CuAssertIntEquals_Msg(tc, "1 in center", 0, answer);
+}
+
+void winner_horizontalSingleTokenBottomRight(CuTest *tc) {
+
+  int num_rows = 5;
+  int num_columns = 5;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[0][num_columns - 1] = 0;  
+
+  answer = winner(num_rows, num_columns, 1, array);
+  CuAssertIntEquals_Msg(tc, "1 in center", 0, answer);
+}
+
+/*Testing Vertical*/
+void winner_verticalEdgeRight(CuTest *tc) {
+
+  int num_rows = 7;
+  int num_columns = 7;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  /*Set winning condition for player 1: vertical far left col, 5 tokens to win*/
+  array[2][num_columns - 1] = 1;
+  array[3][num_columns - 1] = 1;
+  array[4][num_columns - 1] = 1;
+  array[5][num_columns - 1] = 1; 
+  array[6][num_columns - 1] = 1;  
+
+  answer = winner(num_rows, num_columns, 5, array);
+  CuAssertIntEquals_Msg(tc, "1's Right Edge Vertical", 1, answer);
+}
+
+void winner_verticalEdgeLeft(CuTest *tc) {
+
+  int num_rows = 9;
+  int num_columns = 9;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  /*Set winning condition for player 1: vertical far left col, 5 tokens to win*/  
+  array[1][0] = 0;
+  array[2][0] = 0;
+  array[3][0] = 0;
+  array[4][0] = 0;
+  array[5][0] = 0; 
+  array[6][0] = 0;  
+
+  answer = winner(num_rows, num_columns, 6, array);
+  CuAssertIntEquals_Msg(tc, "0's Left Edge Vertical", 0, answer);
+}
+
+void winner_verticalEdgeLeftFullHeight(CuTest *tc) {
+
+  int num_rows = 6;
+  int num_columns = 6;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);  
+  
+  array[0][0] = 0;  
+  array[1][0] = 0;
+  array[2][0] = 0;
+  array[3][0] = 0;
+  array[4][0] = 0;
+  array[5][0] = 0; 
+
+  answer = winner(num_rows, num_columns, 6, array);
+  CuAssertIntEquals_Msg(tc, "0's Left Edge Vertical Full Height", 0, answer);
+}
+
+void winner_verticalEdgeRightFullHeight(CuTest *tc) {
+
+  int num_rows = 6;
+  int num_columns = 6;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);  
+  
+  array[0][num_columns - 1] = 0;  
+  array[1][num_columns - 1] = 0;
+  array[2][num_columns - 1] = 0;
+  array[3][num_columns - 1] = 0;
+  array[4][num_columns - 1] = 0;
+  array[5][num_columns - 1] = 0; 
+
+  answer = winner(num_rows, num_columns, 6, array);
+  CuAssertIntEquals_Msg(tc, "0's Left Edge Vertical Full Height", 0, answer);
+}
+
+void winner_verticallSingleToken(CuTest *tc) {
+
+  int num_rows = 4;
+  int num_columns = 4;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[2][3] = 1;  
+
+  answer = winner(num_rows, num_columns, 1, array);
+  CuAssertIntEquals_Msg(tc, "1 in center", 1, answer);
+}
+
+void winner_verticallSingleTokenTopRight(CuTest *tc) {
+
+  int num_rows = 4;
+  int num_columns = 4;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[num_rows - 1][num_columns - 1] = 1;  
+
+  answer = winner(num_rows, num_columns, 1, array);
+  CuAssertIntEquals_Msg(tc, "1 in top right", 1, answer);
+}
+
+/*Testing Diagonal Left*/
+void winner_diagLeftTopLeft4(CuTest *tc) {
+  int num_rows = 7;
+  int num_columns = 7;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[num_rows - 1][0] = 1;
+  array[num_rows - 2][1] = 1;
+  array[num_rows - 3][2] = 1; 
+  array[num_rows - 4][3] = 1;   
+
+  answer = winner(num_rows, num_columns, 4, array);
+  CuAssertIntEquals_Msg(tc, "1 on left diag top", 1, answer);
+}
+
+void winner_diagLeftTopLeft2(CuTest *tc) {
+  int num_rows = 7;
+  int num_columns = 7;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[num_rows - 1][0] = 0;
+  array[num_rows - 2][1] = 0;  
+
+  answer = winner(num_rows, num_columns, 2, array);
+  CuAssertIntEquals_Msg(tc, "1 in top left len 2", 0, answer);
+}
+
+/*Just to check the base case of 1. I know this is not a valid length*/
+void winner_diagLeftTopLeft1(CuTest *tc) {
+  int num_rows = 3;
+  int num_columns = 3;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[num_rows - 1][0] = 0;  
+
+  answer = winner(num_rows, num_columns, 1, array);
+  CuAssertIntEquals_Msg(tc, "1 in top left len 1", 0, answer);
+}
+
+void winner_diagLeftFull(CuTest *tc) {
+  int num_rows = 3;
+  int num_columns = 3;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[num_rows - 1][0] = 1;
+  array[num_rows - 2][1] = 1;
+  array[num_rows - 3][2] = 1;   
+
+  answer = winner(num_rows, num_columns, 3, array);
+  CuAssertIntEquals_Msg(tc, "1 full board len 3", 1, answer);
+}
+
+void winner_diagLeftCenter(CuTest *tc) {
+  int num_rows = 10;
+  int num_columns = 10;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[num_rows - 1][2] = 1;
+  array[num_rows - 2][3] = 1;
+  array[num_rows - 3][4] = 1;
+  array[num_rows - 4][5] = 1; 
+  array[num_rows - 5][6] = 1; 
+  array[num_rows - 6][7] = 1;
+
+  answer = winner(num_rows, num_columns, 6, array);
+  CuAssertIntEquals_Msg(tc, "1 in middle len 6", 1, answer);
+}
+
+void winner_diagLeftEdgeRight(CuTest *tc) {
+  int num_rows = 6;
+  int num_columns = 6;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[3][2] = 1;
+  array[2][3] = 1; 
+  array[1][4] = 1; 
+  array[0][5] = 1; 
+
+  answer = winner(num_rows, num_columns, 4, array);
+  CuAssertIntEquals_Msg(tc, "1 in bottom right len 4", 1, answer);
+}
+
+void winner_diagLeftBottom1(CuTest *tc) {
+  int num_rows = 6;
+  int num_columns = 6;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[0][5] = 1; 
+
+  answer = winner(num_rows, num_columns, 1, array);
+  CuAssertIntEquals_Msg(tc, "1 in bottom right len 1", 1, answer);
+}
+
+/*Testing Right Diagional*/
+void winner_diagRightTopLeft5(CuTest *tc) {
+  int num_rows = 7;
+  int num_columns = 7;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+
+  array[2][2] = 0;
+  array[3][3] = 0;
+  array[4][4] = 0; 
+  array[5][5] = 0; 
+  array[6][6] = 0;   
+
+  answer = winner(num_rows, num_columns, 5, array);
+  CuAssertIntEquals_Msg(tc, "1 on right diag top", 0, answer);
+}
+
+void winner_diagRightTopLeft2(CuTest *tc) {
+  int num_rows = 4;
+  int num_columns = 4;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);
+  
+  array[2][2] = 0; 
+  array[3][3] = 0;   
+
+  answer = winner(num_rows, num_columns, 2, array);
+  CuAssertIntEquals_Msg(tc, "1 on right diag top len 2", 0, answer);
+}
+
+void winner_diagRightTopLeft1(CuTest *tc) {
+  int num_rows = 4;
+  int num_columns = 4;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);  
+ 
+  array[3][3] = 0;   
+
+  answer = winner(num_rows, num_columns, 1, array);
+  CuAssertIntEquals_Msg(tc, "1 on right diag top len 1", 0, answer);
+}
+
+void winner_diagRightFull(CuTest *tc) {
+  int num_rows = 4;
+  int num_columns = 4;
+  int array[num_rows][num_columns];
+  int answer;
+  ct_initialize(num_rows, num_columns, array);  
+  
+  array[0][0] = 0; 
+  array[1][1] = 0;   
+  array[2][2] = 0; 
+  array[3][3] = 0;   
+
+  answer = winner(num_rows, num_columns, 4, array);
+  CuAssertIntEquals_Msg(tc, "1 on right diag top len 1", 0, answer);
+}
+
+/*
+* End Custom Winner Tests
+*/
 
 /*******************************************************************************************
  *
@@ -294,12 +693,37 @@ void backward_diagonal(CuTest* tc)
 
 
 
-/*  setup */
+/* setup */
 
 CuSuite* c4_engine_suite() {
    CuSuite* suite = CuSuiteNew();
 
    SUITE_ADD_TEST(suite, winner_horizontal_r0);
+   SUITE_ADD_TEST(suite, winner_horizontalTop);
+   SUITE_ADD_TEST(suite, winner_horizontalTopFull);
+   SUITE_ADD_TEST(suite, winner_horizontalTopFail);
+   SUITE_ADD_TEST(suite, winner_horizontalBottomTestOverload);
+   SUITE_ADD_TEST(suite, winner_horizontalSingleToken);
+   SUITE_ADD_TEST(suite, winner_horizontalSingleTokenBottomRight);
+   SUITE_ADD_TEST(suite, winner_horizontalDoubleTokenBottomRight);
+   SUITE_ADD_TEST(suite, winner_verticalEdgeRight);
+   SUITE_ADD_TEST(suite, winner_verticalEdgeLeft);
+   SUITE_ADD_TEST(suite, winner_verticalEdgeLeftFullHeight);
+   SUITE_ADD_TEST(suite, winner_verticalEdgeRightFullHeight);
+   SUITE_ADD_TEST(suite, winner_verticallSingleToken);
+   SUITE_ADD_TEST(suite, winner_verticallSingleTokenTopRight);
+   SUITE_ADD_TEST(suite, winner_diagLeftTopLeft4);
+   SUITE_ADD_TEST(suite, winner_diagLeftTopLeft2);
+   SUITE_ADD_TEST(suite, winner_diagLeftTopLeft1);
+   SUITE_ADD_TEST(suite, winner_diagLeftFull);
+   SUITE_ADD_TEST(suite, winner_diagLeftCenter);
+   SUITE_ADD_TEST(suite, winner_diagLeftEdgeRight);
+   SUITE_ADD_TEST(suite, winner_diagLeftBottom1);
+   SUITE_ADD_TEST(suite, winner_diagRightTopLeft5);
+   SUITE_ADD_TEST(suite, winner_diagRightTopLeft2);
+   SUITE_ADD_TEST(suite, winner_diagRightTopLeft1);
+   SUITE_ADD_TEST(suite, winner_diagRightFull);
+
    SUITE_ADD_TEST(suite, place_token_c1);
 
    SUITE_ADD_TEST(suite, horizontal_row0);

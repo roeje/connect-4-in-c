@@ -116,11 +116,6 @@ void winner_diagright() {
   int answer;
   ct_initialize(num_rows, num_columns, array);
 
-  // array[0][0] = 0;
-  // array[1][0] = 0;
-  // array[2][0] = 0; 
-  // array[3][0] = 0;
-
   array[0][3] = 0;
   array[1][4] = 0;
   array[2][5] = 0; 
@@ -156,14 +151,10 @@ void testPutToken() {
   printBoard(num_rows, num_columns, array);
 }
 
+/*Main Function. Runs game engine and allows user to enter data.*/
 int main (int argc, char *argv[]) { 
   setvbuf(stdout, NULL, _IONBF, 0);
-  printf("Starting Game\n");
-  // testPutToken();
-  // winner_horizontal();
-  // winner_vertical();
-  // winner_diagleft();
-  // winner_diagright();
+  printf("Starting Game\n");  
 
   int num_rows = 0;
   int num_columns = 0;
@@ -200,6 +191,7 @@ int main (int argc, char *argv[]) {
   puts("\n");
   printf("Player: %ds Turn\n", player);  
   
+  /*Start game loop*/
   while(1) {       
     printf("%s\n", "Enter Column # To Place Token"); 
     int column;

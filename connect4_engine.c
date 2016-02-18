@@ -1,13 +1,13 @@
 /* Created By Jesse Roe
  * Connect4 Game: Implementation of the classic Connect4 game in C
- *
+ * 2/17/2016
  */
 #include "connect4_engine.h"
 
 /*Global var to hold the current winner value*/
 int winnerVal = 0;
 
-
+/*Checks top row of board (not row 0 but row (num_rows - 1)*/
 int checkFullBoard(int num_rows, int num_columns, int board[num_rows][num_columns]) {
 	for (int i = 0; i < num_columns; i++) {
 		if (board[num_rows - 1][i] == -1) {
@@ -17,7 +17,7 @@ int checkFullBoard(int num_rows, int num_columns, int board[num_rows][num_column
 	return 1;
 }
 
-/* Checks for the first avalible cell to insert token in given column
+/* Checks for the first avalible cell to insert token in given column.
    NOTE: This fuction is designed based on row 0 being the bottom (lowest row of the board)
    This means that tokens are inserted from row 0 upward. Based on your tests, this should not cause
    any problems.
@@ -31,7 +31,7 @@ int checkForColHeight(int num_rows, int num_columns, int column, int board[num_r
 	return -1;
 }
 
-/*Return weather the token is validly placed*/
+/*Return state of inserted token. Validly placed or invalid*/
 int place_token(int player, int column, int num_rows, int num_columns, int board[num_rows][num_columns]) {
 	
 	/*Check for invalid Parameters*/
@@ -49,11 +49,12 @@ int place_token(int player, int column, int num_rows, int num_columns, int board
 	}
 }
 
-/*Case for each type of direction */
-/*
-  It seemed slighlty cleaner to use this switch instead of creating a 
-  unique function for each case (due to the large number of parameters).
-*/
+/* Case for each type of direction. Based on row and col values passed, 
+ * function checks each valid cell in the specified direction.
+ *
+ * It seemed slighlty cleaner to use this switch instead of creating a 
+ * unique function for each case (due to the large number of parameters).
+ */
 int checkForSeries(int dir, int num_rows, int num_columns, int length_to_win, int r, int c, int board[num_rows][num_columns]) {
 	switch (dir) {
 		/*Horizontal*/
@@ -104,23 +105,14 @@ int checkForSeries(int dir, int num_rows, int num_columns, int length_to_win, in
 	}
 }
 
-/*Interate over each row and column. for each cell in the row, check for series of tokens*/
-int checkHorizontal(int num_rows, int num_columns, int length_to_win, int board[num_rows][num_columns]){
-	// printf("%s\n", "Check Horizontal: ");
+/*Interate over each row and column. For each cell in the row, check for series of tokens*/
+int checkHorizontal(int num_rows, int num_columns, int length_to_win, int board[num_rows][num_columns]){	
 	int r, c;
-	for (r = 0; r < num_rows; r++) {
-		// printf("%s", "Row #: ");
-		// printf("%d\n", r);
-		for(c = 0; c < num_columns - (length_to_win - 1); c++) {
-			// printf("%s", "Col #: ");
-			// printf("%d\n", c);
+	for (r = 0; r < num_rows; r++) {		
+		for(c = 0; c < num_columns - (length_to_win - 1); c++) {			
 			int winner = checkForSeries(0, num_rows, num_columns, length_to_win, r, c, board);
 			if(winner != -1) {
-				winnerVal = winner;
-				// printf("%s", "Row Location: ");
-				// printf("%d\n", r);
-				// printf("%s", "Col Location: ");
-				// printf("%d\n", c);
+				winnerVal = winner;				
 				return 1;
 			}			
 		}
@@ -128,23 +120,14 @@ int checkHorizontal(int num_rows, int num_columns, int length_to_win, int board[
 	return 0;
 }
 
-/*Interate over each row and column. for each cell in the row, check for series of tokens*/
-int checkVertical(int num_rows, int num_columns, int length_to_win, int board[num_rows][num_columns]){
-	// printf("%s\n", "Check Vertical: ");
+/*Interate over each row and column. For each cell in the row, check for series of tokens*/
+int checkVertical(int num_rows, int num_columns, int length_to_win, int board[num_rows][num_columns]){	
 	int r, c;
-	for (c = 0; c < num_columns; c++) {
-		// printf("%s", "Row #: ");
-		// printf("%d\n", r);
-		for(r = 0; r < num_rows - (length_to_win - 1); r++) {
-			// printf("%s", "Col #: ");
-			// printf("%d\n", c);
+	for (c = 0; c < num_columns; c++) {		
+		for(r = 0; r < num_rows - (length_to_win - 1); r++) {			
 			int winner = checkForSeries(1, num_rows, num_columns, length_to_win, r, c, board);
 			if(winner != -1) {
-				winnerVal = winner;
-				// printf("%s", "Row Location: ");
-				// printf("%d\n", r);
-				// printf("%s", "Col Location: ");
-				// printf("%d\n", c);
+				winnerVal = winner;				
 				return 1;
 			}			
 		}
@@ -152,23 +135,14 @@ int checkVertical(int num_rows, int num_columns, int length_to_win, int board[nu
 	return 0;
 }
 
-/*Interate over each row and column. for each cell in the row, check for series of tokens*/
-int checkDiagLeft(int num_rows, int num_columns, int length_to_win, int board[num_rows][num_columns]){
-	// printf("%s\n", "Check Left Diag: ");
+/*Interate over each row and column. For each cell in the row, check for series of tokens*/
+int checkDiagLeft(int num_rows, int num_columns, int length_to_win, int board[num_rows][num_columns]){	
 	int r, c;
-	for (r = 0; r < num_rows - (length_to_win - 1); r++) {
-		// printf("%s", "Row #: ");
-		// printf("%d\n", r);
-		for(c = num_columns - 1; c > (length_to_win - 2); c--) {
-			// printf("%s", "Col #: ");
-			// printf("%d\n", c);
+	for (r = 0; r < num_rows - (length_to_win - 1); r++) {		
+		for(c = num_columns - 1; c > (length_to_win - 2); c--) {			
 			int winner = checkForSeries(2, num_rows, num_columns, length_to_win, r, c, board);
 			if(winner != -1) {
-				winnerVal = winner;
-				// printf("%s", "Row Location: ");
-				// printf("%d\n", r);
-				// printf("%s", "Col Location: ");
-				// printf("%d\n", c);
+				winnerVal = winner;				
 				return 1;
 			}			
 		}
@@ -176,7 +150,7 @@ int checkDiagLeft(int num_rows, int num_columns, int length_to_win, int board[nu
 	return 0;
 }
 
-/*Interate over each row and column. for each cell in the row, check for series of tokens*/
+/*Interate over each row and column. For each cell in the row, check for series of tokens*/
 int checkDiagRight(int num_rows, int num_columns, int length_to_win, int board[num_rows][num_columns]){
 	// printf("%s\n", "Check Right Diag: ");
 	int r, c;

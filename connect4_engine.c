@@ -1,4 +1,5 @@
-/* Created By Jesse Roe
+/* 
+ * Created By Jesse Roe
  * Connect4 Game: Implementation of the classic Connect4 game in C
  * 2/17/2016
  */
@@ -17,10 +18,11 @@ int checkFullBoard(int num_rows, int num_columns, int board[num_rows][num_column
 	return 1;
 }
 
-/* Checks for the first avalible cell to insert token in given column.
-   NOTE: This fuction is designed based on row 0 being the bottom (lowest row of the board)
-   This means that tokens are inserted from row 0 upward. Based on your tests, this should not cause
-   any problems.
+/* 
+ * Checks for the first avalible cell to insert token in given column.
+ * NOTE: This fuction is designed based on row 0 being the bottom (lowest row of the board)
+ * This means that tokens are inserted from row 0 upward. Based on your tests, this should not cause
+ * any problems.
 */
 int checkForColHeight(int num_rows, int num_columns, int column, int board[num_rows][num_columns]) {
 	for (int i = 0; i < num_rows; i++) {

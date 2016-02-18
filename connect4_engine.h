@@ -9,5 +9,3 @@ int checkVertical(int num_rows, int num_columns, int length_to_win, int board[nu
 int checkDiagLeft(int num_rows, int num_columns, int length_to_win, int board[num_rows][num_columns]);
 int checkDiagRight(int num_rows, int num_columns, int length_to_win, int board[num_rows][num_columns]);
 int checkForSeries(int dir, int num_rows, int num_columns, int length_to_win, int r, int c, int board[num_rows][num_columns]);
-
-

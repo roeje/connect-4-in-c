@@ -1,17 +1,15 @@
 CC = gcc
 CFLAGS = -g
 
-mainFileDriver = driver.o connect4_engine.o connect4_engine.o
-mainFileTest = c4_engine_test.o CuTest.o
+mainFileDriver = driver.c
+mainFileTest = c4_engine_test.c CuTest.c CuTest.h connect4_engine.c
 
-main.exe : $(mainFileDriver)
+main : $(mainFileDriver)
 	$(CC) $(CFLAGS) $(mainFileDriver) -o main.exe
 
-tester.exe : $(mainFileTest)
+tester : $(mainFileTest)
 	$(CC) $(CFLAGS) $(mainFileTest) -o tester.exe	
 
-%.o : %.c
-	$(CC) $(CFLAGS) -c $<
 
 
 # CC = clang

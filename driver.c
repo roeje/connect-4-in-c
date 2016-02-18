@@ -169,12 +169,12 @@ int main (int argc, char *argv[]) {
   int num_columns = 0;
   int length_to_win = 0;
   if(argc > 4) {
-    printf("You Entered Too Many Parameters. Please Run Again.");
+    printf("You Entered Too Many Parameters (Format: Rows, Cols, LengthToWin). Please Run Again.");
     puts("\n");
     return 0;
   }
   if(argc < 4) {
-    printf("You Entered Too Few Parameters. Please Run Again.");
+    printf("You Entered Too Few Parameters (Format: Rows, Cols, LengthToWin). Please Run Again.");
     puts("\n");
     return 0;
   }
@@ -207,8 +207,8 @@ int main (int argc, char *argv[]) {
     scanf("%s", temp); 
     column = atoi(temp);  
    
-    if (column <= 0 || column > (num_columns - 1)) {
-      printf("%s\n","You entered a column that was invalid." );
+    if (column < 0 || column > (num_columns - 1)) {
+      printf("%s\n","You entered a column that was invalid. Please try again." );
       continue;
     }
 
